@@ -1,0 +1,28 @@
+/**
+ * Migration: 006_create_categories
+ * Creates the categories table with self-referencing parent_id.
+ */
+
+export async function up(db) {
+  await db.schema.createTable('categories', (table) => {
+    table.increments('id').primary();
+    table.string('name', 150).notNullable();
+    table.string('slug', 200).notNullable().unique();
+    table.text('description').nullable();
+    table.string('image_url', 500).nullable();
+    table
+      .integer('parent_id')
+      .unsigned()
+      .nullable()
+      .references('id')
+      .inTable('categories')
+      .onDelete('SET NULL');
+    table.boolean('is_active').notNullable().defaultTo(true);
+    table.integer('sort_order').notNullable().defaultTo(0);
+    table.timestamps(true, true);
+  });
+}
+
+export async function down(db) {
+  await db.schema.dropTableIfExists('categories');
+}
