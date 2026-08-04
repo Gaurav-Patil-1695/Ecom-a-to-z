@@ -1,10 +1,7 @@
 import { rolesService } from '../roles/roles.service.js';
-import { ordersService } from '../orders/orders.service.js';
-import { returnsService } from '../returns/returns.service.js';
-import { promotionsService } from '../promotions/promotions.service.js';
 import { db } from '../../db/index.js';
 
-const getReports = async (query) => {
+const getReports = async () => {
   const [ordersReport, returnsReport, usersReport, revenueReport] = await Promise.all([
     db.raw(
       `SELECT

@@ -2,10 +2,14 @@ import bcrypt from 'bcryptjs';
 import db from '../../db/client.js';
 
 const ADMIN_EMAIL = 'admin@example.com';
-const ADMIN_PASSWORD = 'Admin@1234';
+const ADMIN_PASSWORD = process.env.ADMIN_SEED_PASSWORD;
 const ADMIN_NAME = 'Admin User';
 
 export async function seed() {
+  if (!ADMIN_PASSWORD) {
+    throw new Error('ADMIN_SEED_PASSWORD environment variable must be set before running seeds.');
+  }
+
   const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
 
   const existing = await db('users').where({ email: ADMIN_EMAIL }).first();

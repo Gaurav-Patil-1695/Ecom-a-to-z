@@ -11,13 +11,14 @@
  *   2. err.status      (set by some third-party libraries)
  *   3. 500             (fallback)
  */
-export function errorHandler(err, req, res, next) { // eslint-disable-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
+export function errorHandler(err, req, res, _next) {
   const statusCode =
     typeof err.statusCode === 'number'
       ? err.statusCode
       : typeof err.status === 'number'
-      ? err.status
-      : 500;
+        ? err.status
+        : 500;
 
   const body = {
     message: err.message || 'Internal Server Error',

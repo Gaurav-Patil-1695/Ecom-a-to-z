@@ -66,7 +66,7 @@ async function buildCartResponse(cartId) {
 /**
  * Validate that the requested quantity is available in stock
  */
-async function validateStock(skuId, requestedQty, excludeCartItemId = null, currentCartQty = 0) {
+async function validateStock(skuId, requestedQty, excludeCartItemId = null) {
   const sku = await db('product_skus').where({ id: skuId }).first();
   if (!sku) {
     throw new AppError('Product SKU not found.', 404);
@@ -111,7 +111,7 @@ async function mergeGuestCart(guestCartId, userCartId) {
     if (existingItem) {
       const newQty = existingItem.quantity + guestItem.quantity;
       // Validate merged quantity (exclude the existing user-cart item from reservation count)
-      await validateStock(guestItem.sku_id, newQty, existingItem.id, existingItem.quantity);
+      await validateStock(guestItem.sku_id, newQty, existingItem.id);
       await db('cart_items').where({ id: existingItem.id }).update({ quantity: newQty, updated_at: db.fn.now() });
     } else {
       await validateStock(guestItem.sku_id, guestItem.quantity);
@@ -205,7 +205,7 @@ export async function addItemService(cartId, body) {
 
   if (existingItem) {
     const newQty = existingItem.quantity + quantity;
-    await validateStock(sku_id, newQty, existingItem.id, existingItem.quantity);
+    await validateStock(sku_id, newQty, existingItem.id);
     await db('cart_items')
       .where({ id: existingItem.id })
       .update({ quantity: newQty, updated_at: db.fn.now() });
@@ -279,7 +279,7 @@ export async function updateItemService(cartId, itemId, body) {
   }
 
   // Validate stock for the new quantity, excluding the current item from reserved count
-  await validateStock(item.sku_id, quantity, itemId, item.quantity);
+  await validateStock(item.sku_id, quantity, itemId);
 
   await db('cart_items').where({ id: itemId }).update({ quantity, updated_at: db.fn.now() });
   await db('carts').where({ id: cartId }).update({ updated_at: db.fn.now() });

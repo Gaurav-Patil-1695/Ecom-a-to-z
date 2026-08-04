@@ -1,7 +1,11 @@
 import Joi from 'joi';
 
+const FULL_NAME_MAX = 100;
+const LINE_MAX = 255;
+const CITY_STATE_MAX = 100;
+
 const addressBodySchema = Joi.object({
-  full_name: Joi.string().trim().min(1).max(100).required().messages({
+  full_name: Joi.string().trim().min(1).max(FULL_NAME_MAX).required().messages({
     'string.base': 'Full name must be a string.',
     'string.empty': 'Full name is required.',
     'string.min': 'Full name must be at least 1 character.',
@@ -14,25 +18,25 @@ const addressBodySchema = Joi.object({
     'string.pattern.base': 'Phone must be a 10-digit number.',
     'any.required': 'Phone is required.',
   }),
-  line1: Joi.string().trim().min(1).max(255).required().messages({
+  line1: Joi.string().trim().min(1).max(LINE_MAX).required().messages({
     'string.base': 'Address line 1 must be a string.',
     'string.empty': 'Address line 1 is required.',
     'string.min': 'Address line 1 must be at least 1 character.',
     'string.max': 'Address line 1 must be at most 255 characters.',
     'any.required': 'Address line 1 is required.',
   }),
-  line2: Joi.string().trim().max(255).allow(null, '').optional().messages({
+  line2: Joi.string().trim().max(LINE_MAX).allow(null, '').optional().messages({
     'string.base': 'Address line 2 must be a string.',
     'string.max': 'Address line 2 must be at most 255 characters.',
   }),
-  city: Joi.string().trim().min(1).max(100).required().messages({
+  city: Joi.string().trim().min(1).max(CITY_STATE_MAX).required().messages({
     'string.base': 'City must be a string.',
     'string.empty': 'City is required.',
     'string.min': 'City must be at least 1 character.',
     'string.max': 'City must be at most 100 characters.',
     'any.required': 'City is required.',
   }),
-  state: Joi.string().trim().min(1).max(100).required().messages({
+  state: Joi.string().trim().min(1).max(CITY_STATE_MAX).required().messages({
     'string.base': 'State must be a string.',
     'string.empty': 'State is required.',
     'string.min': 'State must be at least 1 character.',
@@ -51,7 +55,7 @@ const addressBodySchema = Joi.object({
 });
 
 const updateAddressBodySchema = Joi.object({
-  full_name: Joi.string().trim().min(1).max(100).optional().messages({
+  full_name: Joi.string().trim().min(1).max(FULL_NAME_MAX).optional().messages({
     'string.base': 'Full name must be a string.',
     'string.empty': 'Full name must not be empty.',
     'string.min': 'Full name must be at least 1 character.',
@@ -62,23 +66,23 @@ const updateAddressBodySchema = Joi.object({
     'string.empty': 'Phone must not be empty.',
     'string.pattern.base': 'Phone must be a 10-digit number.',
   }),
-  line1: Joi.string().trim().min(1).max(255).optional().messages({
+  line1: Joi.string().trim().min(1).max(LINE_MAX).optional().messages({
     'string.base': 'Address line 1 must be a string.',
     'string.empty': 'Address line 1 must not be empty.',
     'string.min': 'Address line 1 must be at least 1 character.',
     'string.max': 'Address line 1 must be at most 255 characters.',
   }),
-  line2: Joi.string().trim().max(255).allow(null, '').optional().messages({
+  line2: Joi.string().trim().max(LINE_MAX).allow(null, '').optional().messages({
     'string.base': 'Address line 2 must be a string.',
     'string.max': 'Address line 2 must be at most 255 characters.',
   }),
-  city: Joi.string().trim().min(1).max(100).optional().messages({
+  city: Joi.string().trim().min(1).max(CITY_STATE_MAX).optional().messages({
     'string.base': 'City must be a string.',
     'string.empty': 'City must not be empty.',
     'string.min': 'City must be at least 1 character.',
     'string.max': 'City must be at most 100 characters.',
   }),
-  state: Joi.string().trim().min(1).max(100).optional().messages({
+  state: Joi.string().trim().min(1).max(CITY_STATE_MAX).optional().messages({
     'string.base': 'State must be a string.',
     'string.empty': 'State must not be empty.',
     'string.min': 'State must be at least 1 character.',

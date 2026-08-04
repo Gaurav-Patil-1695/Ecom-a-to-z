@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,7 +19,7 @@ const config = {
       port: parseInt(process.env.DB_PORT || '5432', 10),
       database: process.env.DB_NAME || 'ecommerce_dev',
       user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres',
+      password: process.env.DB_PASSWORD,
     },
     pool: {
       min: 2,
@@ -40,7 +41,7 @@ const config = {
       port: parseInt(process.env.TEST_DB_PORT || '5432', 10),
       database: process.env.TEST_DB_NAME || 'ecommerce_test',
       user: process.env.TEST_DB_USER || 'postgres',
-      password: process.env.TEST_DB_PASSWORD || 'postgres',
+      password: process.env.TEST_DB_PASSWORD,
     },
     pool: {
       min: 2,

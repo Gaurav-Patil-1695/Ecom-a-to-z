@@ -22,26 +22,29 @@ if (typeof globalThis.clearImmediate === 'undefined') {
 
 // jsdom omits the TextEncoder/TextDecoder globals that anything doing UTF-8 byte work expects.
 if (typeof globalThis.TextEncoder === 'undefined' || typeof globalThis.TextDecoder === 'undefined') {
-  const util = require('util');
-  globalThis.TextEncoder = globalThis.TextEncoder || util.TextEncoder;
-  globalThis.TextDecoder = globalThis.TextDecoder || util.TextDecoder;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { TextEncoder, TextDecoder } = require('util');
+  globalThis.TextEncoder = globalThis.TextEncoder || TextEncoder;
+  globalThis.TextDecoder = globalThis.TextDecoder || TextDecoder;
 }
 
 // undici — pulled in transitively by HTTP clients such as @elastic/elasticsearch — reads
 // MessagePort AT REQUIRE TIME. A missing global is therefore not a failed assertion but a crash
 // while the module graph is still loading, which takes the whole suite down with an opaque error.
 if (typeof globalThis.MessagePort === 'undefined') {
-  const workerThreads = require('worker_threads');
-  globalThis.MessagePort = workerThreads.MessagePort;
-  globalThis.MessageChannel = globalThis.MessageChannel || workerThreads.MessageChannel;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { MessagePort, MessageChannel } = require('worker_threads');
+  globalThis.MessagePort = MessagePort;
+  globalThis.MessageChannel = globalThis.MessageChannel || MessageChannel;
 }
 
 // Web streams: present in Node's global scope only from v18, and absent from jsdom's.
 if (typeof globalThis.ReadableStream === 'undefined') {
-  const streamWeb = require('stream/web');
-  globalThis.ReadableStream = streamWeb.ReadableStream;
-  globalThis.WritableStream = globalThis.WritableStream || streamWeb.WritableStream;
-  globalThis.TransformStream = globalThis.TransformStream || streamWeb.TransformStream;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { ReadableStream, WritableStream, TransformStream } = require('stream/web');
+  globalThis.ReadableStream = ReadableStream;
+  globalThis.WritableStream = globalThis.WritableStream || WritableStream;
+  globalThis.TransformStream = globalThis.TransformStream || TransformStream;
 }
 
 // A minimal Response — enough for code that constructs one or reads status/ok/text()/json().

@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { db } from '../../db/index.js';
@@ -82,7 +82,7 @@ export async function loginUser(body) {
   };
 }
 
-export async function logoutUser(body, headers) {
+export async function logoutUser() {
   // Stateless JWT — invalidation is client-side.
   // If a token blacklist table exists it can be updated here.
   return { message: 'Logged out successfully.' };

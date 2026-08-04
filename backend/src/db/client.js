@@ -7,7 +7,7 @@ const db = knex({
     port: parseInt(process.env.DB_PORT || '5432', 10),
     database: process.env.DB_NAME || 'app',
     user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || '',
+    password: process.env.DB_PASSWORD,
   },
   pool: {
     min: parseInt(process.env.DB_POOL_MIN || '2', 10),
